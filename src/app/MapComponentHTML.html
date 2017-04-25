@@ -1,0 +1,116 @@
+<div class="container">
+    <h3 style="color:white">Ride's nearby <b style="font-family:italic;color:black;background-color:#C8C8C8">{{SearchPlaces}}</b></h3>
+<div class="row">
+   <div class="col-md-6">   
+      <div class="form-group">
+        <input placeholder="Type Destination" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+      </div>
+      <div class="jumbotron">
+      <sebm-google-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+        <!-- Show Markers according to list data !-->
+        <sebm-google-map-marker 
+          *ngFor="let m of taxis; let i = index"
+          
+          [latitude]="m.latitude"
+          [longitude]="m.longitude"
+          [label]="Hello"
+          [iconUrl]="'/assets/img/cab.png'"
+          [markerDraggable]="false"
+          (dragEnd)="markerDragEnd(m, $event)">
+        <!-- Info Window display data on click!-->  
+        <sebm-google-map-info-window>
+            <h2>{{m.DriverName}}</h2>
+          <strong><a href="tel:{{m.number}}" class="btn btn-primary"><span class="glyphicon glyphicon-earphone"></span></a></strong>
+        </sebm-google-map-info-window>
+        
+      </sebm-google-map-marker>
+      <sebm-google-map-marker 
+          
+          [latitude]="latitude"
+          [longitude]="longitude"
+          [label]="'H'"
+          [markerDraggable]="false"
+          (dragEnd)="markerDragEnd(m, $event)">
+        <!-- Info Window display data on click!-->  
+        <sebm-google-map-info-window>
+            <h2>Home</h2>
+        </sebm-google-map-info-window>
+        
+      </sebm-google-map-marker>
+      <sebm-google-map-marker 
+          
+          [latitude]="dlat"
+          [longitude]="dlong"
+          [label]="'Destiny'"
+          [markerDraggable]="false"
+          (dragEnd)="markerDragEnd(m, $event)">
+        <!-- Info Window display data on click!-->  
+        <sebm-google-map-info-window>
+            <h2>Destiny</h2>
+        </sebm-google-map-info-window>
+        
+      </sebm-google-map-marker>
+      <!--ployline!-->
+      <sebm-google-map-polyline 
+      [strokeColor]="'blue'"
+      [geodesic]="true"
+      [editable]="true"
+      >
+         <sebm-google-map-polyline-point [latitude]="latitude" [longitude]="longitude">
+         </sebm-google-map-polyline-point>
+         <sebm-google-map-polyline-point [latitude]="dlat" [longitude]="dlon">
+         </sebm-google-map-polyline-point>
+     </sebm-google-map-polyline>
+
+      </sebm-google-map>
+      </div>
+      </div>
+      <div class="col-md-6">
+      <h1 style="color:white">Driver's Lists</h1>
+      <div class="jumbotron jumbotron-fluid">
+      <div class="panel panel-default" *ngFor="let m of taxis | paginate: { itemsPerPage: 2, currentPage: p }; let i = index">
+      <div style="background-color:#277BB0;color:white;" class="panel-heading">
+      <h3 class="panel-title"><b>{{m.DriverName}}</b></h3>
+      </div>
+      <div class="panel-body">
+        <div class="media">
+          <div class="media-left">
+            <a href="#">
+              <img style="border:1px solid red;" class="media-object img-circle" src="/assets/img/peep.png" height="50px" width="50px" alt="pic">
+            </a>
+          </div>
+          <div  class="media-body">
+            <h5 class="media-heading">{{m.number}}</h5>
+            <div>
+            <label  style="color:green;float:left"class="control-label">Rating</label>
+            <!--For rating display!-->
+          <rating [(ngModel)]="rate"
+            [max]="5"
+            [float]="true"
+            [readonly]="true"
+            [titles]="['one', 'two', 'three', 'four', 'five']">
+          </rating>
+          <button type="button" class="btn btn-default" (click)="myModal.open()">Pay</button>
+          </div>
+          <modal #myModal title="Payment">
+              <modal-header>
+              </modal-header>
+              <modal-content>
+              <div class="container">
+              <angular2-stripe-app></angular2-stripe-app>
+              </div>
+              </modal-content>
+              <modal-footer >
+              <button class="btn btn-primary" (click)="myModal.close()">close</button>
+              </modal-footer>
+          </modal>
+      </div>
+      </div>
+      </div>
+      </div>
+      <pagination-controls (pageChange)="p = $event" #api></pagination-controls>
+      </div>
+      
+
+      </div>
+    </div>

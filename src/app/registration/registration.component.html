@@ -1,0 +1,64 @@
+<div class="container">
+<h1>
+  {{title}}
+</h1>
+<h3>Registration!!!</h3>  
+  <div class="container-fluid">
+<div class="jumbotron">
+  <form  class="form" [formGroup]="complexForm" 
+  (ngSubmit)="submitForm(complexForm.value)">
+  
+  
+  <!-- Required Validator Username-->
+  <div class="form-group">
+    <label class="head">Name</label>
+    <input type="text" class="form-control"  required placeholder="Enter Username" 
+    [formControl]="complexForm.controls['name']">
+    <div *ngIf="complexForm.controls['name'].hasError('required') && complexForm.controls['username'].touched" class="alert alert-danger">You must enter Name.</div>
+    <div *ngIf="complexForm.get('name').value!=='Avnesh'" class="alert alert-warning">Hey! thanks.</div>
+    <div *ngIf="complexForm.get('name').value==='Avnesh'" class="alert alert-success">Hey Welcome Noel!</div>
+  </div>
+  
+  <div class="form-group">
+    <label class="head">Username</label>
+    <input type="text" class="form-control"  required placeholder="Enter Username" 
+    [formControl]="complexForm.controls['username']">
+    <div *ngIf="complexForm.controls['username'].hasError('required') && complexForm.controls['username'].touched" class="alert alert-danger">You must enter Username.</div>
+  </div>
+
+  <div class="form-group">
+    <label class="head">Email</label>
+    <input type="text" class="form-control"  required placeholder="Enter Username" 
+    [formControl]="complexForm.controls['email']">
+    <div *ngIf="complexForm.controls['email'].hasError('required') && complexForm.controls['email'].touched" class="alert alert-danger">You must enter Email ID (Ex: philip@gmail.com).</div>
+  </div>
+  
+  <div class="form-group">
+    <label class="head">Mobile Number(Optional)</label>
+    <input type="text" class="form-control"   placeholder="Enter Username" 
+    [formControl]="complexForm.controls['mobile']">
+  </div>
+
+<div formGroupName="account">
+  <div class="form-group">
+    <label class="head">Password</label>
+    <input type="password" class="form-control"  required placeholder="Enter password."
+    formControlName="password">
+  </div>
+
+  <div class="form-group" >
+    <label class="head">Confirm-Password</label>
+    <input type="password" class="form-control"  required placeholder="Enter password."
+    formControlName="cpassword">
+    <div *ngIf="complexForm.get('account').hasError('nomatchpass')" class="alert alert-danger">Passwords Don't Match!!!</div>
+  </div>
+</div>
+
+  <div class="form-group">
+    <button class="btn btn-primary" [disabled]="!complexForm.valid" type="submit">Submit</button>
+    <a class="btn btn-primary" routerLink="/login">BACK</a>
+  </div>
+</form>
+</div>
+</div>
+</div>
